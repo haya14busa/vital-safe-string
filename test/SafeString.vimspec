@@ -30,7 +30,8 @@ Describe Vim.SafeString
       let d = {}
       let d.d = d
       PowerAssert SafeString.string([1, '1', {}]) ==# '[1, ''1'', {}]'
-      PowerAssert SafeString.string([d, d.d, 1]) ==# "[{'d': {...}}, {'d': {...}}, 1]"
+      Assert Equals(SafeString.string([d, d.d, 1]), "[{'d': {...}}, {'d': {...}}, 1]")
+      " PowerAssert SafeString.string([d, d.d, 1]) ==# "[{'d': {...}}, {'d': {...}}, 1]"
     End
 
     It should convert {dict} to string.
