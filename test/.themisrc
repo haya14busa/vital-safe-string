@@ -13,4 +13,4 @@ let g:__vital_power_assert_config = {
 \   '__max_length__': -1
 \ }
 
-let g:vital_vim_save_string_debug = 1
+let g:vital_vim_save_string_debug = 0
