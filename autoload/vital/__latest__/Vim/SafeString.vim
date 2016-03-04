@@ -5,7 +5,7 @@ function! s:_vital_loaded(V) abort
   if get(g:, 'vital_vim_save_string_debug', 0)
   \ && a:V.exists('Vim.PowerAssert')
   \ && a:V.exists('Vim.DbC')
-    execute a:V.import('Vim.PowerAssert').define('Assert')
+    execute a:V.import('Vim.PowerAssert').define('PowerAssert')
     let s:assert = a:V.import('Vim.PowerAssert').assert
     execute a:V.import('Vim.DbC').dbc()
   endif
@@ -28,14 +28,14 @@ function! s:__pre_string(in) abort
 endfunction
 
 function! s:__post_string(in, out) abort
-  Assert type(a:out) is# type('')
+  PowerAssert type(a:out) is# type('')
   if type(a:in.expr) isnot# type([]) && type(a:in.expr) isnot# type({})
-    Assert eval(a:out) is# a:in.expr, '{out} should be parsed back with eval()'
+    PowerAssert eval(a:out) is# a:in.expr, '{out} should be parsed back with eval()'
   endif
   if type(a:in.expr) isnot# type('') && type(a:in.expr) isnot# type(function('function'))
     exe s:assert('a:out is# s:_echo_capture(a:in.expr)', '{out} should be same as `:echo`-ing {expr}')
     " XXX: cannot refer s:_echo_capture() ???
-    " Assert a:out is# s:_echo_capture(a:in.expr), '{out} should be same as `:echo`-ing {expr}'
+    " PowerAssert a:out is# s:_echo_capture(a:in.expr), '{out} should be same as `:echo`-ing {expr}'
   endif
 endfunction
 
@@ -61,11 +61,11 @@ function! s:_dict_to_string(dict, ...) abort
 endfunction
 
 function! s:__pre__dict_to_string(in) abort
-  Assert type(a:in.dict) is# type({})
+  PowerAssert type(a:in.dict) is# type({})
 endfunction
 
 function! s:__post__dict_to_string(in, out) abort
-  Assert type(a:out) is# type('')
+  PowerAssert type(a:out) is# type('')
 endfunction
 
 function! s:_echo_capture(expr) abort
