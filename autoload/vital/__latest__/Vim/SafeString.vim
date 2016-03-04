@@ -1,3 +1,6 @@
+" @vimlint(EVL103, 1, a:in)
+" @vimlint(EVL103, 1, a:out)
+
 function! s:_vital_loaded(V) abort
   if get(g:, 'vital_vim_save_string_debug', 0)
   \ && a:V.exists('Vim.PowerAssert')
@@ -63,6 +66,7 @@ function! s:__post__dict_to_string(in, out) abort
 endfunction
 
 function! s:_echo_capture(expr) abort
+  " @vimlint(EVL102, 1, l:Expr)
   let l:Expr = a:expr
   try
     let save_verbose = &verbose
@@ -75,21 +79,3 @@ function! s:_echo_capture(expr) abort
   endtry
   return out[1:]
 endfunction
-
-" ---
-" let d = {}
-" let d.d = d
-" let d.e = deepcopy(d.d)
-" let b = {}
-" let b.b = b
-" let d.e.c = b
-"
-" echo s:string(d)
-" echo s:string('hi')
-" echo s:string('h"i')
-" echo s:string('h''i')
-" echo s:string(1)
-" echo s:string(1.0)
-" echo s:string({'hoge': 'foo'})
-" echo s:string([1.0, 'hi', 1, 0, function('function'), {'dict': d}])
-" echo s:string([1.0, 'hi'])
