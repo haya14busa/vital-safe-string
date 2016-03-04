@@ -1,0 +1,49 @@
+Describe Vim.SafeString
+
+  Before all
+    let V = vital#of('vital')
+    let SafeString = V.import('Vim.SafeString')
+    execute V.import('Vim.PowerAssert').define('PowerAssert')
+  End
+
+  Describe .string()
+    It should convert {number} to string.
+      for item in [0, 1, -1]
+        PowerAssert SafeString.string(item) is# string(item)
+      endfor
+    End
+
+    It should convert {string} to string.
+      for item in ['hi', 'h"i', 'h''i', "h\"i"]
+        PowerAssert SafeString.string(item) is# string(item)
+      endfor
+    End
+
+    It should convert {Funcref} to string.
+      for l:Item in map(['tr', 'function'], 'function(v:val)')
+        PowerAssert type(l:Item) is# type(function('tr'))
+        PowerAssert SafeString.string(l:Item) is# string(l:Item)
+      endfor
+    End
+
+    It should convert {list} to string.
+      let d = {}
+      let d.d = d
+      PowerAssert SafeString.string([1, '1', {}]) ==# '[1, ''1'', {}]'
+      PowerAssert SafeString.string([d, d.d, 1]) ==# "[{'d': {...}}, {'d': {...}}, 1]"
+    End
+
+    It should convert {dict} to string.
+      let d = {}
+      let d.d = d
+      PowerAssert SafeString.string(d) ==# "{'d': {...}}"
+    End
+
+    It should convert {float} to string.
+      for item in [0.0, 1.2, -1.00005]
+        PowerAssert SafeString.string(item) is# string(item)
+      endfor
+    End
+
+  End
+End
