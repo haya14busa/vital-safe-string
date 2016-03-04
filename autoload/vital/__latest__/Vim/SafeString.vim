@@ -6,6 +6,7 @@ function! s:_vital_loaded(V) abort
   \ && a:V.exists('Vim.PowerAssert')
   \ && a:V.exists('Vim.DbC')
     execute a:V.import('Vim.PowerAssert').define('Assert')
+    let s:assert = a:V.import('Vim.PowerAssert').assert
     execute a:V.import('Vim.DbC').dbc()
   endif
 endfunction
@@ -32,7 +33,9 @@ function! s:__post_string(in, out) abort
     Assert eval(a:out) is# a:in.expr, '{out} should be parsed back with eval()'
   endif
   if type(a:in.expr) isnot# type('') && type(a:in.expr) isnot# type(function('function'))
-    Assert a:out is# s:_echo_capture(a:in.expr), '{out} should be same as `:echo`-ing {expr}'
+    exe s:assert('a:out is# s:_echo_capture(a:in.expr)', '{out} should be same as `:echo`-ing {expr}')
+    " XXX: cannot refer s:_echo_capture() ???
+    " Assert a:out is# s:_echo_capture(a:in.expr), '{out} should be same as `:echo`-ing {expr}'
   endif
 endfunction
 
